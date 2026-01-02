@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../../screens/home/home_content.dart';
-import '../../screens/katalog/katalog_page.dart';
-import '../../screens/cirikhas/ciri_khas_page.dart';
 import '../../screens/riwayat/riwayat_page.dart';
 import '../../screens/profile/profile_page.dart';
 
@@ -17,18 +16,20 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = const [
     HomeContent(),
-    KatalogPage(),
-    CiriKhasPage(),
     RiwayatPage(),
     ProfilePage(),
   ];
-
+s
   @override
   Widget build(BuildContext context) {
+    int displayIndex = _selectedIndex;
+    if (displayIndex >= _pages.length) {
+      displayIndex = _pages.length - 1;
+    }
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: _pages[displayIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: displayIndex,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
@@ -39,8 +40,6 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Katalog'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorit'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Riwayat'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
