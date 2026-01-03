@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../payment/payment_page.dart';
+
 class KatalogDetailPage extends StatelessWidget {
   final Map<String, String> car;
 
   const KatalogDetailPage({super.key, required this.car});
+
+  int _parsePrice(String price) {
+    final digits = price.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digits.isEmpty) return 0;
+    return int.parse(digits);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +106,25 @@ class KatalogDetailPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      try {
+                        final amount = _parsePrice(car['price'] ?? '');
+                        debugPrint('Rental Now pressed, amount=$amount');
+
+                        if (amount <= 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Harga tidak valid')));
+                          return;
+                        }
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => PaymentPage(car: car, amount: amount)),
+                        );
+                      } catch (e, st) {
+                        debugPrint('Error opening payment: $e\n$st');
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Gagal membuka metode pembayaran')));
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       minimumSize: Size(double.infinity, 50),

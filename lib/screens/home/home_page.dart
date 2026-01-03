@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     RiwayatPage(),
     ProfilePage(),
   ];
-s
+
   @override
   Widget build(BuildContext context) {
     int displayIndex = _selectedIndex;
